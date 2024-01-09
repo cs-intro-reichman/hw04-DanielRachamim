@@ -45,36 +45,36 @@ public class ArrayOps {
 
     public static boolean containsTheSameElements(int [] array1,int [] array2) {
         // Create frequency arrays for array1 and array2
-        int maxVal = Math.max(getMaxValue(array1),getMaxValue(array2));
-        int frequency1[] = new int [maxVal  +1];
-        int frequency2[] = new int [maxVal  +1];
+        int without_dups1[] = deduplicate(array1);
+        int without_dups2[] = deduplicate(array2);
+        
         boolean areEqual = true;
 
-        for (int i = 0; i < array1.length; i++){
-            if (frequency1[array1[i]] == 0) {
-                frequency1[array1[i]]++; 
+        // comparing the deduplicated arrays
+        if (without_dups1.length == without_dups2.length) {
+            for (int i = 0; i < without_dups1.length; i++) {
+                int temp = without_dups1[i];
+                boolean numExists = false;
+                for (int j = 0; j < without_dups2.length; j++) {
+                    if (temp == without_dups2[j]) {
+                        numExists = true;
+                        break;
+                    }
+                }
+                if (numExists == false) {
+                    areEqual = false;
+                    break;
+                }
             }
+        } else {
+            areEqual = false;
         }
-
-        for (int j = 0; j < array2.length; j++){
-            if (frequency2[array2[j]] == 0) {
-                frequency2[array2[j]]++; 
-            }
-        }
-
-        for (int i = 0; i < frequency1.length; i++){
-            if (frequency1[i] != frequency2[i]) {
-                areEqual = false;
-            }
-        }
-
         return areEqual;
-    }
-
+        }
 
     //Helper function - Find the maximum value in the array
     
-    private static int getMaxValue(int[] arr) {
+    public static int getMaxValue(int[] arr) {
         int maximum = Integer.MIN_VALUE;;
         for (int number : arr) {
             maximum = Math.max(maximum, number);
@@ -82,13 +82,62 @@ public class ArrayOps {
         return maximum;
     }
 
-    
+    //Helper function - deleting the duplicate values from a given array and returning a new one 
+    public static int[] deduplicate(int[] array) {
+        int[] newArray = new int[array.length];
+        int specialIndex = 0;
+        for (int i = 0; i < array.length; i++) {
+        boolean isSpecial = true;
+        // Checks if the current element is already in the uniqueArray
+        for (int j = 0; j < specialIndex; j++) {
+            if (array[i] == newArray[j]) {
+                isSpecial = false;
+                    break;
+                }
+            }
+            // If the element is unique it adds it to the uniqueArray
+            if (isSpecial) {
+                newArray[specialIndex] = array[i];
+                specialIndex++;
+            }
+        }
 
+        // Create a new array with the correct size
+        int[] finalArray = new int[specialIndex];
+            
+        // coying the elements from uniqueArray to resultArray
+        for (int i = 0; i < specialIndex; i++) {
+            finalArray[i] = newArray[i];
+        }
+
+        return finalArray;
+    }
 
 
     public static boolean isSorted(int [] array) {
-        // Write your code here:
-        return false;
-    }
+        int n = array.length;
 
+        // Check for increasing order
+        boolean increasing = true;
+        for (int i = 1; i < n; i++) {
+            if (array[i] < array[i - 1]) {
+                increasing = false;
+                break;
+            }
+        }
+
+        // Check for decreasing order
+        boolean decreasing = true;
+        for (int i = 1; i < n; i++) {
+            if (array[i] > array[i - 1]) {
+                decreasing = false;
+                break;
+            }
+        }
+
+        // The array is sorted if either increasing or decreasing is true
+        return increasing || decreasing;
+    }
 }
+
+    
