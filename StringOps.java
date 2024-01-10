@@ -22,11 +22,12 @@ public class StringOps {
     //////                                               ///////
     ////////////////////////////////////////////////////////////
     public static void main(String[] args) {
-        System.out.println(camelCase("Hello World")); // Output: "helloWorld"
-        System.out.println(camelCase("HELLO world")); // Output: "helloWorld"
-        System.out.println(camelCase(" tWo wordS")); // Output: "twoWords"
-        System.out.println(camelCase("world")); // Output: "world"
-        System.out.println(camelCase(" Intro to coMPUter sCIEncE ")); // Output: "introToComputerScience"
+        System.out.println(allIndexOf("Hello world",'l')); // output: {2, 3, 9}
+        System.out.println(allIndexOf("Hello worLd",'l')); // output: {2, 3}
+        System.out.println(allIndexOf("Hello world",'o')); // output: {4, 7}
+        System.out.println(allIndexOf("Hello world",' ')); // output: {5}
+        System.out.println(allIndexOf("Hello world",'d')); // output: {10}
+        System.out.println(allIndexOf("MMMM",'M')); // output: {0, 1, 2, 3}
     }
 
     public static String capVowelsLowRest (String string) {
@@ -81,7 +82,7 @@ public class StringOps {
         // Looping thorugh the string
         for (int i = 0; i < string.length(); i++) {
             char temp = string.charAt(i);
-            //First word:
+            // First word:
             if (numberOfSpaces == 0) {
                 if (isLowerCase(temp)) {
                     new_str += temp;
@@ -94,7 +95,7 @@ public class StringOps {
                 } else if ((temp == ' ') && (i == 0)) {
                     numberOfSpaces = 0;
                 }
-            // Second word and so on
+            // Second word and so on:
             } else {
                 if ((temp != ' ') && (i == spaceIndex + 1)) {
                     if (isLowerCase(temp)) {
@@ -116,32 +117,51 @@ public class StringOps {
 
 
     public static int[] allIndexOf (String string, char chr) {
-        // Write your code here:
-        return new int[1];
+        int matches = 0;
+        
+        //First loop on the given string to determine the size of the array
+        for (int i = 0; i < string.length(); i++) {
+            char temp = string.charAt(i);
+            if (temp == chr) {
+                matches++;
+            }
+        }
+
+        //Creating the array. The length is gonna be the number of matches we got on the first loop
+        int[] indexesArray = new int[matches];
+        int indexes = 0;
+        //Second loop on the given string to populate it with values
+        for (int i = 0; i < string.length(); i++) {
+            char temp = string.charAt(i);
+            if (temp == chr) {
+                indexesArray[indexes] = i;
+                indexes++;
+            }
+        }
+        
+        return indexesArray;
     }
 
 
+    //Helper functions
+    //Gets a char and lower case it
 
-
-    /* Helper functions
-     * Gets a char and lower case it
-     */
     public static char toLowerCase (char character) {
         character += 32;
         return character;
     }
+
     
-    /*
-     * Gets a char and upper case it
-     */
+    //Gets a char and upper case it
+
     public static char toUpperCase (char character) {
         character -= 32;
         return character;
     }
 
-    /*
-     * Gets a char and checks if its upper case
-     */
+    
+    //Gets a char and checks if its upper case
+
     public static boolean isUpperCase (char character) {
         if (character > 'A' && character < 'Z') {
             return true;
@@ -150,27 +170,15 @@ public class StringOps {
         else return false;
     }
 
-    /*
-     * Gets a char and checks if its lower case
-     */
+    
+    //Gets a char and checks if its lower case
+    
     public static boolean isLowerCase (char character) {
         if (character > 'a' && character < 'z') {
             return true;
         } 
 
         else return false;
-    }
-
-    public static boolean containsSpace(String input) {
-        // Check if the input string contains a space without using contains
-        if (input != null) {
-            for (int i = 0; i < input.length(); i++) {
-                if (input.charAt(i) == ' ') {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
 }
