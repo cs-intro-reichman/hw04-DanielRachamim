@@ -22,11 +22,11 @@ public class StringOps {
     //////                                               ///////
     ////////////////////////////////////////////////////////////
     public static void main(String[] args) {
-        System.out.println(capVowelsLowRest("Hello World")); // "hEllO wOrld"
-        System.out.println(capVowelsLowRest("One two tHRee world")); // "OnE twO thrEE wOrld"
-        System.out.println(capVowelsLowRest("vowels are fun")); // "vOwEls ArE fUn"
-        System.out.println(capVowelsLowRest("intro")); // "IntrO"
-        System.out.println(capVowelsLowRest("yellow")); // "yEllOw"
+        System.out.println(camelCase("Hello World")); // Output: "helloWorld"
+        System.out.println(camelCase("HELLO world")); // Output: "helloWorld"
+        System.out.println(camelCase(" tWo wordS")); // Output: "twoWords"
+        System.out.println(camelCase("world")); // Output: "world"
+        System.out.println(camelCase(" Intro to coMPUter sCIEncE ")); // Output: "introToComputerScience"
     }
 
     public static String capVowelsLowRest (String string) {
@@ -71,6 +71,58 @@ public class StringOps {
         return new_str;
     }
 
+
+
+
+    public static String camelCase (String string) {
+        String new_str = "";
+        int numberOfSpaces = 0;
+        int spaceIndex = 0;
+        // Looping thorugh the string
+        for (int i = 0; i < string.length(); i++) {
+            char temp = string.charAt(i);
+            //First word:
+            if (numberOfSpaces == 0) {
+                if (isLowerCase(temp)) {
+                    new_str += temp;
+                } else if (isUpperCase(temp)) {
+                    temp = toLowerCase(temp);
+                    new_str += temp;
+                } else if ((temp == ' ') && (i != 0)) {
+                    numberOfSpaces++;
+                    spaceIndex = i;
+                } else if ((temp == ' ') && (i == 0)) {
+                    numberOfSpaces = 0;
+                }
+            // Second word and so on
+            } else {
+                if ((temp != ' ') && (i == spaceIndex + 1)) {
+                    if (isLowerCase(temp)) {
+                        temp = toUpperCase(temp);
+                        new_str += temp;
+                    } else new_str += temp;
+                } else if (temp != ' ') {
+                    if (isUpperCase(temp)) {
+                        temp = toLowerCase(temp);
+                        new_str += temp;
+                    } else new_str += temp;
+                } else if (temp == ' ') {
+                    spaceIndex = i;
+                }
+            }
+        }
+        return new_str;
+    }
+
+
+    public static int[] allIndexOf (String string, char chr) {
+        // Write your code here:
+        return new int[1];
+    }
+
+
+
+
     /* Helper functions
      * Gets a char and lower case it
      */
@@ -109,17 +161,16 @@ public class StringOps {
         else return false;
     }
 
-
-
-
-
-    public static String camelCase (String string) {
-        // Write your code here:
-        return "";
+    public static boolean containsSpace(String input) {
+        // Check if the input string contains a space without using contains
+        if (input != null) {
+            for (int i = 0; i < input.length(); i++) {
+                if (input.charAt(i) == ' ') {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    public static int[] allIndexOf (String string, char chr) {
-        // Write your code here:
-        return new int[1];
-    }
 }
